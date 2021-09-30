@@ -200,4 +200,4 @@ If you are using this project, there are few ways you can support it:
   
 ❤️ Opensource  
 
-<sub>[Magento 2 on the AWS Cloud: Quick Start Deployment](https://www.magenx.com/blog/post/adobe-commerce-cloud-alternative-infrastructure-as-code-terraform-configuration.html)</sub>
+<sub>[Magento 2 on the AWS Cloud: Quick Start Deployment](https://www.magenx.com/blog/post/Starter-Magento-2-AWS-Cloud-auto-scaling-Infrastructure-with-Terraform.html)</sub>
