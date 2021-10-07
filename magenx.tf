@@ -1221,7 +1221,7 @@ EOF
 resource "aws_cloudwatch_event_target" "codecommit_main" {
   rule      = aws_cloudwatch_event_rule.codecommit_main.name
   target_id = "${var.app["brand"]}-EventBridge-Target-Git-Deployment-Script"
-  arn       = aws_ssm_document.ssm_document_pull_main.arn
+  arn       = aws_ssm_document.git_pull_main.arn
   role_arn  = aws_iam_role.eventbridge_service_role.arn
  
 run_command_targets {
