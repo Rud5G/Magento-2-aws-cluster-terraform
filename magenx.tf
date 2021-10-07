@@ -1423,7 +1423,7 @@ EOF
 # # ---------------------------------------------------------------------------------------------------------------------#
 # Create SSM Document runShellScript to pull main branch from CodeCommit
 # # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_ssm_document" "ssm_document_pull_main" {
+resource "aws_ssm_document" "git_pull_main" {
   name          = "${var.app["brand"]}-codecommit-pull-main-changes"
   document_type = "Command"
   document_format = "YAML"
@@ -1455,7 +1455,7 @@ EOT
 # # ---------------------------------------------------------------------------------------------------------------------#
 # Create SSM Document runShellScript to pull staging branch from CodeCommit
 # # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_ssm_document" "ssm_document_pull_staging" {
+resource "aws_ssm_document" "git_pull_staging" {
   name          = "${var.app["brand"]}-codecommit-pull-staging-changes"
   document_type = "Command"
   document_format = "YAML"
@@ -1487,7 +1487,7 @@ EOT
 # # ---------------------------------------------------------------------------------------------------------------------#
 # Create SSM Document runShellScript to pull build branch from CodeCommit to deploy code and static files
 # # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_ssm_document" "ssm_document_pull_build" {
+resource "aws_ssm_document" "git_pull_build" {
   name          = "${var.app["brand"]}-codecommit-pull-build-changes"
   document_type = "Command"
   document_format = "YAML"
@@ -1527,7 +1527,7 @@ EOT
 # # ---------------------------------------------------------------------------------------------------------------------#
 # Create SSM Document runShellScript to install magento, push to codecommit, init git
 # # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_ssm_document" "ssm_document_install" {
+resource "aws_ssm_document" "install_magento" {
   name          = "${var.app["brand"]}-install-magento-push-codecommit"
   document_type = "Command"
   document_format = "YAML"
