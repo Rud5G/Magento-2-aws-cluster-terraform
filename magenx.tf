@@ -1029,8 +1029,8 @@ resource "aws_cloudwatch_metric_alarm" "alb_rps" {
 }
 
 
-
-/////////////////////////////////////////////////////[ AUTOSCALING CONFIGURATION ]////////////////////////////////////////
+## AUTOSCALING CONFIGURATION
+/////////////////////////////////////////////////////[ ## AUTOSCALING CONFIGURATION ]////////////////////////////////////////
 
 # # ---------------------------------------------------------------------------------------------------------------------#
 # Create Launch Template for Autoscaling Groups - user_data converted
