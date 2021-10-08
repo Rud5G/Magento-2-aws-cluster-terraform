@@ -1029,7 +1029,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_rps" {
 }
 
 
-## AUTOSCALING CONFIGURATION
+
 /////////////////////////////////////////////////////[ ## AUTOSCALING CONFIGURATION ]////////////////////////////////////////
 
 # # ---------------------------------------------------------------------------------------------------------------------#
@@ -1045,9 +1045,11 @@ resource "aws_launch_template" "this" {
         volume_type = "gp3"
             }
   }
+  metadata_options {
+    http_tokens = "required"
+  }
   iam_instance_profile { name = aws_iam_instance_profile.ec2[each.key].name }
   image_id = data.aws_ami.distro.id
-  instance_initiated_shutdown_behavior = "terminate"
   instance_type = each.value
   monitoring { enabled = false }
   network_interfaces { 
