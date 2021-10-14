@@ -1014,7 +1014,8 @@ resource "aws_launch_template" "this" {
             }
   }
   metadata_options {
-    http_tokens = "required"
+    http_endpoint  = "enabled"
+    http_tokens    = "required"
   }
   iam_instance_profile { name = aws_iam_instance_profile.ec2[each.key].name }
   image_id = data.aws_ami.distro.id
