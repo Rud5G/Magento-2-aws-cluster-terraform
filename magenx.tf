@@ -35,7 +35,7 @@ resource "random_uuid" "this" {
 # Generate random passwords
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "random_password" "this" {
-  for_each         = toset(["rds", "mq", "app", "blowfish"])
+  for_each         = toset(["rds", "rabbitmq", "app", "blowfish"])
   length           = (each.key == "blowfish" ? 32 : 16)
   lower            = true
   upper            = true
@@ -167,38 +167,6 @@ resource "aws_sns_topic_subscription" "default" {
 
 
 
-///////////////////////////////////////////////////////[ SECURITY GROUPS ]////////////////////////////////////////////////
-
-# # ---------------------------------------------------------------------------------------------------------------------#
-# Create Security Groups
-# # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_security_group" "this" {
-  for_each    = local.security_group
-  name        = "${var.app["brand"]}-${each.key}"
-  description = "${each.key} security group"
-  vpc_id      = aws_vpc.this.id
-  
-    tags = {
-    Name = "${var.app["brand"]}-${each.key}"
-  }
-}
-# # ---------------------------------------------------------------------------------------------------------------------#
-# Create Security Rules for Security Groups
-# # ---------------------------------------------------------------------------------------------------------------------#
-resource "aws_security_group_rule" "this" {
-   for_each =  local.security_rule
-      type             = lookup(each.value, "type", null)
-      description      = lookup(each.value, "description", null)
-      from_port        = lookup(each.value, "from_port", null)
-      to_port          = lookup(each.value, "to_port", null)
-      protocol         = lookup(each.value, "protocol", null)
-      cidr_blocks      = lookup(each.value, "cidr_blocks", null)
-      source_security_group_id = lookup(each.value, "source_security_group_id", null)
-      security_group_id = each.value.security_group_id
-    }
-
-
-
 ///////////////////////////////////////////////////[ AWS CERTIFICATE MANAGER ]////////////////////////////////////////////
 
 # # ---------------------------------------------------------------------------------------------------------------------#
@@ -238,7 +206,7 @@ resource "aws_efs_mount_target" "this" {
   for_each        = aws_subnet.this
   file_system_id  = aws_efs_file_system.this.id
   subnet_id       = aws_subnet.this[each.key].id
-  security_groups = [aws_security_group.this["efs"].id]
+  security_groups = [aws_security_group.efs.id]
 }
 
 
@@ -400,18 +368,18 @@ resource "aws_iam_instance_profile" "ec2" {
 # Create RabbitMQ - queue message broker
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_mq_broker" "this" {
-  broker_name = "${var.app["brand"]}-${var.mq["broker_name"]}"
+  broker_name = "${var.app["brand"]}-${var.rabbitmq["broker_name"]}"
   engine_type        = "RabbitMQ"
-  engine_version     = var.mq["engine_version"]
-  host_instance_type = var.mq["host_instance_type"]
-  security_groups    = [aws_security_group.this["mq"].id]
+  engine_version     = var.rabbitmq["engine_version"]
+  host_instance_type = var.rabbitmq["host_instance_type"]
+  security_groups    = [aws_security_group.rabbitmq.id]
   subnet_ids         = [values(aws_subnet.this).0.id]
   user {
     username = var.app["brand"]
-    password = random_password.this["mq"].result
+    password = random_password.this["rabbitmq"].result
   }
   tags = {
-    Name   = "${var.app["brand"]}-${var.mq["broker_name"]}"
+    Name   = "${var.app["brand"]}-${var.rabbitmq["broker_name"]}"
   }
 }
 
@@ -446,7 +414,7 @@ resource "aws_elasticache_replication_group" "this" {
   node_type                     = var.redis["node_type"]
   port                          = var.redis["port"]
   parameter_group_name          = aws_elasticache_parameter_group.this.id
-  security_group_ids            = [aws_security_group.this["redis"].id]
+  security_group_ids            = [aws_security_group.redis.id]
   subnet_group_name             = aws_elasticache_subnet_group.this.name
   automatic_failover_enabled    = var.redis["automatic_failover_enabled"]
   multi_az_enabled              = var.redis["multi_az_enabled"]
@@ -650,7 +618,7 @@ resource "aws_elasticsearch_domain" "this" {
   }
   vpc_options {
     subnet_ids = slice(values(aws_subnet.this).*.id, 0, var.elk["instance_count"])
-    security_group_ids = [aws_security_group.this["elk"].id]
+    security_group_ids = [aws_security_group.elk.id]
   }
   tags = {
     Name = "${var.app["brand"]}-${var.elk["domain_name"]}"
@@ -742,7 +710,7 @@ resource "aws_db_instance" "this" {
   password               = random_password.this["rds"].result
   parameter_group_name   = aws_db_parameter_group.this.id
   skip_final_snapshot    = var.rds["skip_final_snapshot"]
-  vpc_security_group_ids = [aws_security_group.this["rds"].id]
+  vpc_security_group_ids = [aws_security_group.rds.id]
   db_subnet_group_name   = aws_db_subnet_group.this.name
   enabled_cloudwatch_logs_exports = [var.rds["enabled_cloudwatch_logs_exports"]]
   performance_insights_enabled    = var.rds["performance_insights_enabled"]
@@ -885,7 +853,7 @@ resource "aws_lb" "this" {
   internal           = false
   load_balancer_type = "application"
   drop_invalid_header_fields = true
-  security_groups    = [aws_security_group.this["alb"].id]
+  security_groups    = [aws_security_group.alb.id]
   subnets            = values(aws_subnet.this).*.id
   access_logs {
     bucket  = aws_s3_bucket.this["system"].bucket
@@ -1054,7 +1022,7 @@ resource "aws_launch_template" "this" {
   monitoring { enabled = false }
   network_interfaces { 
     associate_public_ip_address = true
-    security_groups = [aws_security_group.this["ec2"].id]
+    security_groups = [aws_security_group.ec2.id]
   }
   tag_specifications {
     resource_type = "instance"
@@ -1340,7 +1308,7 @@ PROFILER="${random_string.this["profiler"].result}"
 
 RABBITMQ_ENDPOINT="${trimsuffix(trimprefix("${aws_mq_broker.this.instances.0.endpoints.0}", "amqps://"), ":5671")}"
 RABBITMQ_USER="${var.app["brand"]}"
-RABBITMQ_PASSWORD='${random_password.this["mq"].result}'
+RABBITMQ_PASSWORD='${random_password.this["rabbitmq"].result}'
 
 ELASTICSEARCH_ENDPOINT="https://${aws_elasticsearch_domain.this.endpoint}:443"
 
@@ -1578,7 +1546,7 @@ mainSteps:
       --amqp-host=${trimsuffix(trimprefix("${aws_mq_broker.this.instances.0.endpoints.0}", "amqps://"), ":5671")} \
       --amqp-port=5671 \
       --amqp-user=${var.app["brand"]} \
-      --amqp-password='${random_password.this["mq"].result}' \
+      --amqp-password='${random_password.this["rabbitmq"].result}' \
       --amqp-virtualhost='/' \
       --amqp-ssl=true \
       --search-engine=elasticsearch7 \
