@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////[ SECURITY GROUPS ]///////////////////////////////////////////////
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for ALB
+# Create security group and rules for ALB
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "alb" {
   name        = "${var.app["brand"]}-alb-sg"
@@ -41,7 +41,7 @@ resource "aws_security_group" "alb" {
 }
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for EC2
+# Create security group and rules for EC2
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "ec2" {
   name        = "${var.app["brand"]}-ec2-sg"
@@ -154,7 +154,7 @@ resource "aws_security_group_rule" "ec2_http_in" {
     }
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for RDS
+# Create security group and rules for RDS
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "rds" {
   name        = "${var.app["brand"]}-rds-sg"
@@ -175,7 +175,7 @@ resource "aws_security_group" "rds" {
 }
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for ElastiCache
+# Create security group and rules for ElastiCache
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "redis" {
   name        = "${var.app["brand"]}-redis-sg"
@@ -215,7 +215,7 @@ resource "aws_security_group" "rabbitmq" {
 }
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for EFS
+# Create security group and rules for EFS
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "efs" {
   name        = "${var.app["brand"]}-efs-sg"
@@ -244,7 +244,7 @@ resource "aws_security_group" "efs" {
 }
 
 # # ---------------------------------------------------------------------------------------------------------------------#
-# Create security grou and rules for ELK
+# Create security group and rules for ELK
 # # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "elk" {
   name        = "${var.app["brand"]}-elk-sg"
