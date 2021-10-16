@@ -195,7 +195,9 @@ resource "aws_security_group" "redis" {
   }
 }
 
-
+# # ---------------------------------------------------------------------------------------------------------------------#
+# Create security group and rules for RabbitMQ
+# # ---------------------------------------------------------------------------------------------------------------------#
 resource "aws_security_group" "rabbitmq" {
   name        = "${var.app["brand"]}-rabbitmq-sg"
   description = "Security group rules for ${var.app["brand"]} RabbitMQ"
