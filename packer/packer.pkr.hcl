@@ -6,6 +6,7 @@ variable "vpc_id" {}
 variable "source_ami" {}
 variable "skip_create_ami" {}
 variable "region" {}
+variable "volume_size" {}
 
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
@@ -28,6 +29,12 @@ source "amazon-ebs" "latest-ami" {
   region        = "${var.region}"
   source_ami    = "${var.source_ami}"
   ssh_username = "admin"
+#  launch_block_device_mappings {
+#    device_name = "/dev/xvda"
+#    volume_size = "${var.volume_size}"
+#    volume_type = "gp3"
+#    delete_on_termination = true
+#  }
 }
 
 build {
