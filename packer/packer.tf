@@ -17,6 +17,7 @@ resource "null_resource" "packer" {
   -var vpc_id=${aws_vpc.this.id} \
   -var source_ami=${data.aws_ami.distro.id} \
   -var brand=${var.app["brand"]} \
+  -var volume_size=${var.app["volume_size"]} \
   packer.pkr.hcl
 
 EOF
