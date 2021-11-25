@@ -28,13 +28,6 @@ resource "null_resource" "packer" {
 -var SNS_TOPIC_ARN=${aws_sns_topic.default.arn} \
 -var CODECOMMIT_APP_REPO=codecommit::${data.aws_region.current.name}://${aws_codecommit_repository.app.repository_name} \
 -var CODECOMMIT_SERVICES_REPO=codecommit::${data.aws_region.current.name}://${aws_codecommit_repository.services.repository_name} \
--var EXTRA_PACKAGES_DEB="nfs-common unzip git patch python3-pip acl attr imagemagick snmp" \
--var PHP_PACKAGES_DEB="cli fpm json common mysql zip gd mbstring curl xml bcmath intl soap oauth lz4 apcu" \
--var EXCLUDE_PACKAGES_DEB="apache2* *apcu-bc" \
--var PHP_VERSION=${var.app["php_version"]} \
--var PHP_INI="/etc/php/${var.app["php_version"]}/fpm/php.ini" \
--var PHP_FPM_POOL="/etc/php/${var.app["php_version"]}/fpm/pool.d/www.conf" \
--var PHP_OPCACHE_INI="/etc/php/${var.app["php_version"]}/fpm/conf.d/10-opcache.ini" \
 -var VERSION=2 \
 -var DOMAIN=${var.app["domain"]} \
 -var STAGING_DOMAIN=${var.app["staging_domain"]} \
@@ -48,6 +41,13 @@ resource "null_resource" "packer" {
 -var MYSQL_PATH=mysql_${random_string.this["mysql_path"].result} \
 -var PROFILER=${random_string.this["profiler"].result} \
 -var BLOWFISH=${random_password.this["blowfish"].result} \
+-var EXTRA_PACKAGES_DEB="nfs-common unzip git patch python3-pip acl attr imagemagick snmp" \
+-var PHP_PACKAGES_DEB="cli fpm json common mysql zip gd mbstring curl xml bcmath intl soap oauth lz4 apcu" \
+-var EXCLUDE_PACKAGES_DEB="apache2* *apcu-bc" \
+-var PHP_VERSION=${var.app["php_version"]} \
+-var PHP_INI="/etc/php/${var.app["php_version"]}/fpm/php.ini" \
+-var PHP_FPM_POOL="/etc/php/${var.app["php_version"]}/fpm/pool.d/www.conf" \
+-var PHP_OPCACHE_INI="/etc/php/${var.app["php_version"]}/fpm/conf.d/10-opcache.ini" \
 packer.pkr.hcl
 EOF
   }
