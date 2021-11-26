@@ -2,8 +2,8 @@
 > Deploy a full-scale secure and flexible e-commerce infrastructure based on Magento 2 in a matter of seconds.  
 > Enterprise-grade solution for companies of all sizes, B2B B2C, providing the best customer experience.  
 
-<img src="https://user-images.githubusercontent.com/1591200/117845471-7abda280-b278-11eb-8c88-db3fa307ae40.jpeg" width="200" height="140"> <img src="https://user-images.githubusercontent.com/1591200/117845982-edc71900-b278-11eb-81ec-e19465f1344c.jpeg" width="175" height="145"> <img src="https://user-images.githubusercontent.com/1591200/118028531-158ead80-b35b-11eb-8957-636de16ada34.png" width="250" height="155">
-<img src="https://user-images.githubusercontent.com/1591200/130320410-91749ce8-5af1-4802-af25-ffb36e7ded98.png" width="120" height="135">
+<img src="https://user-images.githubusercontent.com/1591200/117845471-7abda280-b278-11eb-8c88-db3fa307ae40.jpeg" width="170" height="120"> <img src="https://user-images.githubusercontent.com/1591200/117845982-edc71900-b278-11eb-81ec-e19465f1344c.jpeg" width="155" height="135"> <img src="https://user-images.githubusercontent.com/1591200/118028531-158ead80-b35b-11eb-8957-636de16ada34.png" width="220" height="135">
+<img src="https://user-images.githubusercontent.com/1591200/130320410-91749ce8-5af1-4802-af25-ffb36e7ded98.png" width="100" height="115"><img src="https://user-images.githubusercontent.com/1591200/143559434-7593c7bf-79b5-4a1f-b6cc-71060cf0bbec.png" width="165" height="165">
 
 <br />
 
