@@ -104,3 +104,35 @@ resource "aws_cloudwatch_event_target" "codepipeline_main" {
   role_arn  = aws_iam_role.eventbridge_service_role.arn
 }
 
+resource "aws_codedeploy_app" "this" {
+  name = "${var.app["brand"]}-${data.aws_region.current.name}-deployment-app"
+  tags = {
+    Name = "${var.app["brand"]}-${data.aws_region.current.name}-deployment-app"
+  }
+}
+
+resource "aws_codedeploy_deployment_group" "this" {
+  app_name              = aws_codedeploy_app.this.name
+  deployment_group_name = "${var.app["brand"]}-${data.aws_region.current.name}-deployment-group"
+  service_role_arn      = aws_iam_role.codedeploy.arn
+
+    ec2_tag_filter {
+      key   = "Name"
+      type  = "KEY_AND_VALUE"
+      value = "aws_launch_template.this["admin"].tag_specifications[0].tags.Name"
+    }
+
+  trigger_configuration {
+    trigger_events     = ["DeploymentFailure","DeploymentSuccess"]
+    trigger_name       = "${var.app["brand"]}-${data.aws_region.current.name}-deployment-alert"
+    trigger_target_arn = aws_sns_topic.default.arn
+  }
+
+  auto_rollback_configuration {
+    enabled = false
+  }
+  
+  tags = {
+    Name = "${var.app["brand"]}-${data.aws_region.current.name}-deployment-group"
+  }
+}
