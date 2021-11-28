@@ -72,3 +72,35 @@ resource "aws_iam_role" "codepipeline" {
   ]
   tags = {}
 }
+
+# # ---------------------------------------------------------------------------------------------------------------------#
+# Create EventBridge rule to monitor CodeCommit repository state
+# # ---------------------------------------------------------------------------------------------------------------------#
+resource "aws_cloudwatch_event_rule" "codecommit_main" {
+  name        = "${var.app["brand"]}-EventBridge-Rule-CodeCommit-Repository-State-Change"
+  description = "CloudWatch monitor magento repository state change main branch"
+  event_pattern = <<EOF
+{
+	"source": ["aws.codecommit"],
+	"detail-type": ["CodeCommit Repository State Change"],
+	"resources": ["${aws_codecommit_repository.app.arn}"],
+    "detail": {
+     "event": [
+       "referenceUpdated"
+      ],
+		 "referenceType": ["branch"],
+		 "referenceName": ["main"]
+	}
+}
+EOF
+}
+# # ---------------------------------------------------------------------------------------------------------------------#
+# Create EventBridge target to execute SSM Document
+# # ---------------------------------------------------------------------------------------------------------------------#
+resource "aws_cloudwatch_event_target" "codepipeline_main" {
+  rule      = aws_cloudwatch_event_rule.codecommit_main.name
+  target_id = "${var.app["brand"]}-EventBridge-Start-CodePipeline"
+  arn       = aws_codepipeline.this.arn
+  role_arn  = aws_iam_role.eventbridge_service_role.arn
+}
+
