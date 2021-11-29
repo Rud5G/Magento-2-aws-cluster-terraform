@@ -150,7 +150,7 @@ The idea was to create a full-fledged turnkey infrastructure, with deeper settin
 
 ## :hammer_and_wrench: Magento 2 development | source code:
 - [x] Local provisioner copy files from https://github.com/magenx/Magento-2
-- [x] Pickup files from your own repo @ [variables.tf#L16](https://github.com/magenx/Magento-2-aws-cluster-terraform/blob/start/variables.tf#L16)
+- [x] Pickup files from your own repo @ [variables.tf#L16](/variables.tf#L16)
 - [x] Files saved to AWS CloudShell /tmp directory and pushed to CodeCommit.
 - [x] Later on EC2 instance user_data configured on boot to clone files from CodeCommit branch.
 - [x] Right after infrastructure deployment the minimal Magento 2 package is ready to install.
